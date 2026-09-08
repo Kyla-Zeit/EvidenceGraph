@@ -1,0 +1,13 @@
+﻿fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+neo4j>=5.26.0
+rapidfuzz>=3.10.0
+python-dateutil>=2.9.0
+networkx>=3.4
+httpx>=0.28.0
+pillow>=11.0.0
+pypdf>=5.1.0
+pytest>=8.3.0
+pytest-asyncio>=0.24.0

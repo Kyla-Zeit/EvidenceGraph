@@ -1,0 +1,8 @@
+{
+  "name": "@evidencegraph/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript domain types and API contracts for EvidenceGraph",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "private": true
+}

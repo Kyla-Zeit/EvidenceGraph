@@ -1,0 +1,21 @@
+﻿# Multi-stage build for .NET API
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["apps/api/EvidenceGraph.Api/EvidenceGraph.Api.csproj", "apps/api/EvidenceGraph.Api/"]
+COPY ["apps/api/EvidenceGraph.Core/EvidenceGraph.Core.csproj", "apps/api/EvidenceGraph.Core/"]
+COPY ["apps/api/EvidenceGraph.Infrastructure/EvidenceGraph.Infrastructure.csproj", "apps/api/EvidenceGraph.Infrastructure/"]
+
+RUN dotnet restore "apps/api/EvidenceGraph.Api/EvidenceGraph.Api.csproj"
+
+COPY apps/api/ apps/api/
+WORKDIR "/src/apps/api/EvidenceGraph.Api"
+RUN dotnet build "EvidenceGraph.Api.csproj" -c Release -o /app/build
+RUN dotnet publish "EvidenceGraph.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+COPY --from=build /app/publish .
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "EvidenceGraph.Api.dll"]
